@@ -12,11 +12,18 @@ import { readFileSync } from 'fs';
 //
 // print process.argv
 
+/**
+ *  The Function Calculates the mean
+ *
+ *  @param {number} mean - mean number
+ *  @param {number} arrayIntegers -  number
+ */
+
 function meanFunction (arrayIntegers: number) {
         let total = 0
         let mean = 0
-        for (const counter = 0; counter < arrayIntegers.length; counter++) {
-                total = total + arrrayIntegers[counter]
+        for (let counter = 0; counter < arrayIntegers.length; counter++) {
+                total = total + arrayIntegers[counter]
         }
         let length = arrayIntegers.length
         if (length > 0) {
@@ -26,6 +33,7 @@ function meanFunction (arrayIntegers: number) {
 }
 function medianFunction (arrayIntegers: number) {
         let returnValue = 0
+        let median = 0
 
 process.argv.forEach(function (val, index, array) {
   console.log(index + ': ' + val)
@@ -37,5 +45,5 @@ const file = readFileSync(process.argv[2], 'utf8')
 const newArray = file.split(/\r?\n/)
 
 console.log('Calculating...')
-const mean = mean(newArray)
-const median = median(newArray)
+let mean = mean(newArray)
+let median = median(newArray)
