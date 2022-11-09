@@ -1,49 +1,73 @@
 /**
- * The program finds mean and median
+ * The program gets the wood length
  *
  * By:      Ethan Prieur
  * Version: 1.0
- * Since:   2022-9-29
+ * Since:   2022-9-24
  */
 
 // get arguments
 //
-import { readFileSync } from 'fs';
-//
-// print process.argv
+import { readFileSync } from 'fs'
 
 /**
- *  The Function Calculates the mean
+ * The function calculates the mean
  *
- *  @param {number} mean - mean number
- *  @param {number} arrayIntegers -  number
+ * @param {Array} arrayOfIntegers  - integer array
+ * @returns {Array} Return value
  */
-
-function meanFunction (arrayIntegers: number) {
-        let total = 0
-        let mean = 0
-        for (let counter = 0; counter < arrayIntegers.length; counter++) {
-                total = total + arrayIntegers[counter]
-        }
-        let length = arrayIntegers.length
-        if (length > 0) {
-                mean = total / length
-        }
-        return mean
+function meanFunction (arrayOfIntegers: number[]): number {
+  let total = 0
+  let mean = 0
+  let addNumber = 0
+  for (let counter = 0; counter < arrayOfIntegers.length; counter++) {
+    addNumber = arrayOfIntegers[counter]
+    total = total + addNumber
+  }
+  const length = arrayOfIntegers.length
+  if (length > 0) {
+    mean = total / length
+  }
+  return mean
 }
-function medianFunction (arrayIntegers: number) {
-        let returnValue = 0
-        let median = 0
 
-process.argv.forEach(function (val, index, array) {
-  console.log(index + ': ' + val)
-})
+/**
+ * The function calculates the median
+ *
+ * @param {Array} arrayOfIntegers  - integer array
+ * @returns {Array} Return value
+ */
+function medianFunction (arrayOfIntegers: number[]): number {
+  let returnValue = 0
+  const middle = arrayOfIntegers.length / 2
+  let addNumber = 0
+  if (arrayOfIntegers.length % 2 === 1) {
+    returnValue = arrayOfIntegers[middle]
+  } else {
+    addNumber = arrayOfIntegers[middle]
+    returnValue = (arrayOfIntegers[middle - 1] + addNumber) / 2
+  }
+  return returnValue
+}
+//
+// print process.argv
+process.argv.forEach(function (val, index, array) {})
 
+console.log(process.argv[2])
 
 const file = readFileSync(process.argv[2], 'utf8')
+console.log(file)
 
 const newArray = file.split(/\r?\n/)
+const numberArray: number[] = []
+let valueInt = 0
 
-console.log('Calculating...')
-let mean = mean(newArray)
-let median = median(newArray)
+for (let counter = 0; counter < newArray.length; counter++) {
+  valueInt = parseInt(newArray[counter])
+  numberArray.push(valueInt)
+}
+console.log('\nCalculating stats...')
+const mean = meanFunction(numberArray)
+const median = medianFunction(numberArray)
+console.log('The mean is %d', mean)
+console.log('The median is %d', median)
