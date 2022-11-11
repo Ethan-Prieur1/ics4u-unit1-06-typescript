@@ -1,73 +1,81 @@
 /**
- * The program gets the wood length
+ * This program gives you the mean and median
+ * for a set of numbers on a .txt file.
  *
  * By:      Ethan Prieur
  * Version: 1.0
- * Since:   2022-9-24
+ * Since:   2022-11-11
  */
 
 // get arguments
 //
-import { readFileSync } from 'fs'
+import { readFileSync } from "fs";
 
 /**
- * The function calculates the mean
+ * This function calculates the mean (average) value of a set.
  *
- * @param {Array} arrayOfIntegers  - integer array
- * @returns {Array} Return value
+ * @param {Array<number>} numberArray Array containing the set.txt file
+ * @param {number} quantity The amount of numbers in the array
+ * @returns {number} mean The average of all the numbers
  */
-function meanFunction(arrayOfIntegers: number[]): number {
-  let total = 0
-  let mean = 0
-  let addNumber = 0
-  for (let counter = 0; counter < arrayOfIntegers.length; counter++) {
-    addNumber = arrayOfIntegers[counter]
-    total = total + addNumber
+function meanCalculation(numberArray: number[], quantity: number): number {
+  let mean = 0;
+  for (let counter = 0; counter < quantity; counter++) {
+    mean += numberArray[counter];
   }
-  const length = arrayOfIntegers.length
-  if (length > 0) {
-    mean = total / length
-  }
-  return mean
+  mean /= quantity;
+  return mean;
 }
 
 /**
- * The function calculates the median
+ * This function calculates the median (middle number) in a set.
  *
- * @param {Array} arrayOfIntegers  - integer array
- * @returns {Array} Return value
+ * @param {Array<number>} numberArray Array containing the set.txt file
+ * @param {number} quantity The amount of numbers in the array
+ * @returns {number} median The middle value of all the numbers
  */
-function medianFunction(arrayOfIntegers: number[]): number {
-  let returnValue = 0
-  const middle = arrayOfIntegers.length / 2
-  let addNumber = 0
-  if (arrayOfIntegers.length % 2 === 1) {
-    returnValue = arrayOfIntegers[middle]
+function medianCalculation(numberArray: number[], quantity: number): number {
+  let median = 0;
+
+  const orderedArray = numberArray.sort(function (a, b) {
+    return a - b;
+  });
+
+  if (quantity % 2 === 0) {
+    median =
+      (orderedArray[quantity / 2] + orderedArray[(quantity - 1) / 2]) / 2;
   } else {
-    addNumber = arrayOfIntegers[middle]
-    returnValue = (arrayOfIntegers[middle - 1] + addNumber) / 2
+    median = orderedArray[(quantity - 1) / 2];
   }
-  return returnValue
+  return median;
 }
-//
-// print process.argv
-process.argv.forEach(function (val, index, array) {})
 
-console.log(process.argv[2])
+// Change to desired text file
+const filePath = "./set2.txt";
 
-const file = readFileSync(process.argv[2], 'utf8')
-console.log(file)
+// Constants
+const numberArray = [];
+const file = readFileSync(filePath, "utf8");
+const textArray = file.split(/\r?\n/);
 
-const newArray = file.split(/\r?\n/)
-const numberArray: number[] = []
-let valueInt = 0
+// UNCOMMENT THIS IF YOUR TEXT FILE HAS A BLANK CHAR AT THE END
+// textArray.pop()
 
-for (let counter = 0; counter < newArray.length; counter++) {
-  valueInt = parseInt(newArray[counter])
-  numberArray.push(valueInt)
+console.log("This program calculates the means and media from a txt file.");
+console.log(`The current file being used is ${String(filePath)}.\n`);
+
+// Process
+for (let counter = 0; counter < textArray.length; counter++) {
+  numberArray.push(Number(textArray[counter]));
 }
-console.log('\nCalculating stats...')
-const mean = meanFunction(numberArray)
-const median = medianFunction(numberArray)
-console.log('The mean is %d', mean)
-console.log('The median is %d', median)
+const quantity = numberArray.length;
+
+// Run Functions
+const mean = meanCalculation(numberArray, quantity);
+const median = medianCalculation(numberArray, quantity);
+
+// Output
+console.log(`The mean is ${String(mean)}.`);
+console.log(`The median is ${String(median)}.`);
+
+console.log("\nDone.");
